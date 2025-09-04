@@ -6,7 +6,6 @@ pipeline {
     IMAGE_TAG = 'latest'
     HELM_RELEASE = 'log-aggregator'
     HELM_CHART_PATH = './helm'
-    SONAR_SCANNER_PATH = '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner'
   }
 
   stages {
@@ -16,7 +15,8 @@ pipeline {
         withSonarQubeEnv('MySonarQubeServer') {
           withCredentials([string(credentialsId: 'TOKEN_ID', variable: 'SONAR_TOKEN')]) {
             sh '''
-              /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+              export PATH=$PATH:/usr/local/bin
+              sonar-scanner \
                 -Dsonar.projectKey=log-aggregator \
                 -Dsonar.sources=parser \
                 -Dsonar.language=py \
@@ -56,6 +56,13 @@ pipeline {
             --set image.repository=$IMAGE_NAME \
             --set image.tag=$IMAGE_TAG
         '''
+      }
+    }
+
+    stage('Cleanup Workspace') {
+      steps {
+        echo '🧹 Cleaning up workspace...'
+        cleanWs()
       }
     }
   }
