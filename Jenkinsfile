@@ -1,10 +1,6 @@
 pipeline {
   agent any
 
-  tools {
-    sonarQubeScanner 'SonarScanner' // Must match the name in Global Tool Configuration
-  }
-
   environment {
     IMAGE_NAME = 'awaismalak/log-aggregator'
     IMAGE_TAG = 'latest'
