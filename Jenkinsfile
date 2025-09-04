@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  tools {
+    sonarQubeScanner 'SonarScanner' // This must match the name in Jenkins Global Tool Configuration
+  }
+
   environment {
     IMAGE_NAME = 'awaismalak/log-aggregator'
     IMAGE_TAG = 'latest'
@@ -59,4 +63,3 @@ pipeline {
     }
   }
 }
-
