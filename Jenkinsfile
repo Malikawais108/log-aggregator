@@ -15,8 +15,7 @@ pipeline {
         withSonarQubeEnv('MySonarQubeServer') {
           withCredentials([string(credentialsId: 'TOKEN_ID', variable: 'SONAR_TOKEN')]) {
             sh '''
-              export PATH=$PATH:/usr/local/bin
-              sonar-scanner \
+              /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
                 -Dsonar.projectKey=log-aggregator \
                 -Dsonar.sources=parser \
                 -Dsonar.language=py \
