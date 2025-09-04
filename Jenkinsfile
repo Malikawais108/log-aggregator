@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    sonarQubeScanner 'SonarScanner' // This must match the name in Jenkins Global Tool Configuration
+    sonarQubeScanner 'SonarScanner' // Must match the name in Global Tool Configuration
   }
 
   environment {
@@ -16,15 +16,16 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         echo '🔍 Running SonarQube code quality scan...'
-        withCredentials([string(credentialsId: 'SONAR_TOKEN_2', variable: 'SONAR_TOKEN')]) {
-          sh """
-            sonar-scanner \
-              -Dsonar.projectKey=log-aggregator \
-              -Dsonar.sources=parser \
-              -Dsonar.language=py \
-              -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=$SONAR_TOKEN
-          """
+        withSonarQubeEnv('MySonarQubeServer') {
+          withCredentials([string(credentialsId: 'SONAR_TOKEN_2', variable: 'SONAR_TOKEN')]) {
+            sh """
+              sonar-scanner \
+                -Dsonar.projectKey=log-aggregator \
+                -Dsonar.sources=parser \
+                -Dsonar.language=py \
+                -Dsonar.login=$SONAR_TOKEN
+            """
+          }
         }
       }
     }
