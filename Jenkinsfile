@@ -13,13 +13,13 @@ pipeline {
       steps {
         echo '🔍 Running SonarQube code quality scan...'
         withSonarQubeEnv('MySonarQubeServer') {
-          withCredentials([string(credentialsId: 'TOKEN_IID', variable: 'TOKEN_IID')]) {
+          withCredentials([string(credentialsId: 'TOKEN_ID', variable: 'TOKEN_ID')]) {
             sh '''
               /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
                 -Dsonar.projectKey=log-aggregator \
                 -Dsonar.sources=parser \
                 -Dsonar.language=py \
-                -Dsonar.login=$TOKEN_IID
+                -Dsonar.login=$TOKEN_ID
             '''
           }
         }
