@@ -1,0 +1,21 @@
+adminUser: admin
+adminPassword: admin123
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-server.default.svc.cluster.local
+        access: proxy
+        isDefault: true
+
+smtp:
+  enabled: true
+  host: smtp.gmail.com:587
+  user: your_email@gmail.com
+  password: your_app_password
+  from_address: your_email@gmail.com
+  skip_verify: false
+
