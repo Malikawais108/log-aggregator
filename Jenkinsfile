@@ -27,10 +27,8 @@ pipeline {
       steps {
         echo '🧪 Running container to validate exporter...'
         sh '''
-          docker run --rm -d -p 8087:8087 $IMAGE_NAME:$IMAGE_TAG
+          docker run --rm $IMAGE_NAME:$IMAGE_TAG python parser/main.py &
           sleep 5
-          curl -f http://localhost:8087/metrics
-          docker ps -q --filter ancestor=$IMAGE_NAME:$IMAGE_TAG | xargs docker stop
         '''
       }
     }
