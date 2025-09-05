@@ -1,7 +1,14 @@
 FROM python:3.10-slim
-WORKDIR /app
-COPY parser/ /app/
-RUN pip install prometheus_client
-EXPOSE 8000
-CMD ["python", "main.py"]
 
+WORKDIR /app
+
+# Copy your app code and requirements
+COPY parser/ /app/
+COPY requirements.txt /app/
+
+# Install all dependencies
+RUN pip install -r requirements.txt
+
+EXPOSE 8087
+
+CMD ["python", "main.py"]
