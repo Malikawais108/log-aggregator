@@ -15,13 +15,12 @@ pipeline {
         withSonarQubeEnv('MySonarQubeServer') {
           withCredentials([string(credentialsId: 'TOKEN-ID', variable: 'TOKEN_ID')]) {
             sh '''
-  /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-    -Dsonar.projectKey=log-aggregator \
-    -Dsonar.sources=parser \
-    -Dsonar.language=py \
-    -Dsonar.login=$TOKEN_ID
-'''
-
+              /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+                -Dsonar.projectKey=log-aggregator \
+                -Dsonar.sources=parser \
+                -Dsonar.language=py \
+                -Dsonar.login=$TOKEN_ID
+            '''
           }
         }
       }
