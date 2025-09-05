@@ -4,33 +4,30 @@ pipeline {
   environment {
     IMAGE_NAME = 'awaismalak/log-aggregator'
     IMAGE_TAG = 'latest'
-    HELM_RELEASE = 'log-aggregator'
-    HELM_CHART_PATH = './helm'
   }
 
   stages {
-    stage('SonarQube Analysis') {
+    stage('Clone Repository') {
       steps {
-        echo '🔍 Running SonarQube code quality scan...'
-        withSonarQubeEnv('MySonarQubeServer') {
-          withCredentials([string(credentialsId: 'TOKEN-ID', variable: 'TOKEN_ID')]) {
-            sh '''
-              /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-                -Dsonar.projectKey=log-aggregator \
-                -Dsonar.sources=parser \
-                -Dsonar.language=py \
-                -Dsonar.login=$TOKEN_ID
-            '''
-          }
-        }
+        echo '📥 Cloning project from GitHub...'
+        git url: 'https://github.com/Malikawais108/log-aggregator.git', branch: 'main'
       }
     }
 
     stage('Build Docker Image') {
       steps {
-        echo '🔧 Building Docker image...'
+        echo '🔧 Building Docker image from root-level Dockerfile...'
         sh '''
-          docker build -t $IMAGE_NAME:$IMAGE_TAG ./parser
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+        '''
+      }
+    }
+
+    stage('Run Tests') {
+      steps {
+        echo '🧪 Running Python tests inside container...'
+        sh '''
+          docker run --rm $IMAGE_NAME:$IMAGE_TAG python parser/main.py
         '''
       }
     }
@@ -44,17 +41,6 @@ pipeline {
             docker push $IMAGE_NAME:$IMAGE_TAG
           '''
         }
-      }
-    }
-
-    stage('Deploy to Kubernetes') {
-      steps {
-        echo '📦 Deploying to Kubernetes with Helm...'
-        sh '''
-          helm upgrade --install $HELM_RELEASE $HELM_CHART_PATH \
-            --set image.repository=$IMAGE_NAME \
-            --set image.tag=$IMAGE_TAG
-        '''
       }
     }
 
