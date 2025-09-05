@@ -13,7 +13,7 @@ pipeline {
       steps {
         echo '🔍 Running SonarQube code quality scan...'
         withSonarQubeEnv('MySonarQubeServer') {
-          withCredentials([string(credentialsId: 'TOKEN_ID', variable: 'TOKEN_ID')]) {
+          withCredentials([string(credentialsId: 'TOKEN-ID', variable: 'TOKEN_ID')]) {
             sh '''
               export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
               sonar-scanner \
