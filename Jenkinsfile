@@ -27,7 +27,7 @@ pipeline {
       steps {
         echo '🧪 Running container to validate exporter...'
         sh '''
-          docker run --rm $IMAGE_NAME:$IMAGE_TAG python parser/main.py &
+          docker run --rm $IMAGE_NAME:$IMAGE_TAG python main.py &
           sleep 5
         '''
       }
