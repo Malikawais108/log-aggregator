@@ -23,11 +23,14 @@ pipeline {
       }
     }
 
-    stage('Run Tests') {
+    stage('Run Exporter') {
       steps {
-        echo '🧪 Running Python tests inside container...'
+        echo '🧪 Running container to validate exporter...'
         sh '''
-          docker run --rm $IMAGE_NAME:$IMAGE_TAG python parser/main.py
+          docker run --rm -d -p 8000:8000 $IMAGE_NAME:$IMAGE_TAG
+          sleep 5
+          curl -f http://localhost:8000/metrics
+          docker ps -q --filter ancestor=$IMAGE_NAME:$IMAGE_TAG | xargs docker stop
         '''
       }
     }
