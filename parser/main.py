@@ -32,6 +32,6 @@ def simulate_logs():
 
 if __name__ == "__main__":
     start_http_server(8087)
-    print("[INFO] Exporter running on http://localhost:8000/metrics")
+    print("[INFO] Exporter running on http://localhost:8087/metrics")
     simulate_logs()
 
