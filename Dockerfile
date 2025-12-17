@@ -6,6 +6,9 @@ WORKDIR /app
 COPY parser/ /app/
 COPY requirements.txt /app/
 
+# ✅ Copy tests into the image
+COPY tests/ /app/tests/
+
 # Install all dependencies
 RUN pip install -r requirements.txt
 
