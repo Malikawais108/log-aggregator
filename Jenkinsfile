@@ -22,14 +22,15 @@ pipeline {
         '''
       }
     }
-    stage('Run Tests') {
-      steps {
-        echo '🧪 Running unit/integration tests...'
-        sh '''
-           docker run --rm $IMAGE_NAME:$IMAGE_TAG pytest --maxfail=1 --disable-warnings -q
-        '''
+  stage('Run Tests') {
+  steps {
+    echo '🧪 Running unit/integration tests...'
+    sh '''
+      docker run --rm $IMAGE_NAME:$IMAGE_TAG pytest tests/ --maxfail=1 --disable-warnings -q
+    '''
   }
 }
+
 
 
     stage('Run Exporter') {
